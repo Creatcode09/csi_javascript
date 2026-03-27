@@ -1,0 +1,9 @@
+{
+  "id": "p001",
+  "title": "Two Sum (Relay Edition)",
+  "description": "Find two numbers in the array that add up to the target.",
+  "part_a_prompt": "# PART A: Write a helper function 'parse_input' that takes a comma-separated string of integers and returns a list of integers.",
+  "part_b_prompt": "# PART B: Use your partner's 'parse_input' to implement 'two_sum(array_str, target)'. Return the two indices.",
+  "interface_stub": "def parse_input(s: str) -> list[int]:\n    pass\n\ndef two_sum(array_str: str, target: int) -> list[int]:\n    pass",
+  "language": "python"
+}

@@ -1,0 +1,9 @@
+{
+  "id": "p002",
+  "title": "Palindrome Checker",
+  "description": "Check if a given string is a valid palindrome, ignoring spaces and punctuation.",
+  "part_a_prompt": "# PART A: Write a helper function 'clean_string' that removes all non-alphanumeric characters and converts to lowercase.",
+  "part_b_prompt": "# PART B: Use your partner's 'clean_string' to implement 'is_palindrome(s)'. Return a boolean.",
+  "interface_stub": "def clean_string(s: str) -> str:\n    pass\n\ndef is_palindrome(s: str) -> bool:\n    pass",
+  "language": "python"
+}
