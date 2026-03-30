@@ -3,9 +3,14 @@ const runBtn = document.querySelector('.run-btn');
 const submitBtn = document.querySelector('.submit-btn');
 const switchBtn = document.querySelector('.switch-btn');
 const consoleBox = document.querySelector('.console-box');
+const output = document.querySelector('.bottom-panel');
 
+// output.style.display = "none";
 // 1. Run Button Logic
 runBtn.addEventListener('click', () => {
+
+    // output.style.display = "block";
+
     // Get the current code from Monaco Editor
     const code = editor.getValue();
     console.log("Running Code:", code);
@@ -92,3 +97,40 @@ window.onload = () => {
     timeRemaining = 180;
     startTimer();
 };
+
+const dragBar = document.getElementById("drag-bar");
+const editorContainer = document.getElementById("editor-container");
+const consolePanel = document.querySelector(".bottom-panel");
+
+let isDragging = false;
+
+dragBar.addEventListener("mousedown", () => {
+  isDragging = true;
+  document.body.style.cursor = "row-resize";
+});
+
+document.addEventListener("mousemove", (e) => {
+  if (!isDragging) return;
+
+  const containerTop = editorContainer.parentElement.getBoundingClientRect().top;
+  const totalHeight = editorContainer.parentElement.clientHeight;
+
+  let newEditorHeight = e.clientY - containerTop;
+
+  // Limits (important)
+  if (newEditorHeight < 150) newEditorHeight = 150;
+  if (newEditorHeight > totalHeight - 100) newEditorHeight = totalHeight - 100;
+
+  editorContainer.style.height = `${newEditorHeight}px`;
+  consolePanel.style.height = `${totalHeight - newEditorHeight - 6}px`;
+
+  // 🔥 VERY IMPORTANT for Monaco
+  if (editor) {
+    editor.layout();
+  }
+});
+
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+  document.body.style.cursor = "default";
+});
