@@ -5,18 +5,38 @@ const switchBtn = document.querySelector('.switch-btn');
 const consoleBox = document.querySelector('.console-box');
 
 // 1. Run Button Logic
-runBtn.addEventListener('click', () => {
-    // Get the current code from Monaco Editor
+runBtn.addEventListener('click', async () => {
+    // 1. Get the current code and language
     const code = editor.getValue();
-    console.log("Running Code:", code);
+    const language = document.querySelector('.language-select').value.toLowerCase();
     
-    // Placeholder UI update
-    consoleBox.innerHTML = '<span style="color: #60a5fa;">Running...</span>';
+    // 2. Visual Feedback
+    consoleBox.innerHTML = '<span style="color: #60a5fa;">Compiling and Running...</span>';
     
-    // Simulate backend execution delay
-    setTimeout(() => {
-        consoleBox.innerHTML = 'Execution finished. (Backend connection pending)';
-    }, 1000);
+    try {
+        // 3. The "Bridge": Sending data to FastAPI
+        const response = await fetch('http://localhost:8000/run-code', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                code: code, 
+                language: language 
+            })
+        });
+
+        // 4. Wait for the result from Python
+        const result = await response.json();
+
+        // 5. Display the actual output or error
+        if (result.error) {
+            consoleBox.innerHTML = `<pre style="color: #ef4444;">${result.error}</pre>`;
+        } else {
+            consoleBox.innerHTML = `<pre style="color: #f8fafc;">${result.output}</pre>`;
+        }
+
+    } catch (err) {
+        consoleBox.innerHTML = '<span style="color: #ef4444;">Connection Error: Is the FastAPI server running?</span>';
+    }
 });
 
 // 2. Submit Button Logic
